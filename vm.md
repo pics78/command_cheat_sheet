@@ -1,0 +1,7 @@
+- KVM(Kernel-based Virtual Machine)
+    - 仮想マシンを実行するための基盤OSとしてLinuxを使用するためのソフトウェア
+    - CPUが仮想化支援機構に対応している必要がある(Intel VT-x, AMD AMD-V)
+        - `$ lscpu | grep Virtualization`  
+            -> `Virtualization:     VT-x`  
+            -> `Virtualization:     AMD-V`
+        - `$ grep -E 'vmx|svm' /proc/cpuinfo`
