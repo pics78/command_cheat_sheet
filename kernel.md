@@ -146,5 +146,20 @@
     - 設定ファイルは`/etc/udev/rules.d/`以下に配置
     - sysfsがどのようにデバイスを扱っているかを確認: `$ udevadm info`
         - `$ udevadm info -q path -n /dev/sda`
-        - (より詳細に)`$ udevadm info -q env -n /dev/sda`
+        - (より詳細に) `$ udevadm info -q env -n /dev/sda`
     - デバイスの検知をモニタリングする: `$ udevadm monitor`
+- カーネルクラッシュダンプの取得
+    - カーネルがクラッシュした時点のメモリ内容をストレージに出力する
+    - `Kdump`という仕組みを用いる
+    - カーネルクラッシュ時のメモリダンプを行うためにダンプキャプチャーカーネルを用意する
+    - ダンプキャプチャーカーネルは`Kexec`という機能によって起動する
+    - Kdumpが有効かどうかはsysytemdで確認できる: `$ systemctl status kdump`
+    - クラッシュダンプ用にメモリを確保する  
+    -> GRUB設定ファイル`/etc/default/grub`の`GRUB_CMDLINE_LINUX`行の末尾に`crashkernel=128M`を追加  
+    -> 設定を反映: `$ grub2-mkconfig -o /boot/grub2/grub.cfg`  
+    -> 再起動: `$ reboot`  
+    -> 設定が反映されているか確認: `$ cat /proc/cmdline`
+    - 故意にカーネルをクラッシュさせる方法
+        - `$ echo 1 > /proc/sys/kernel/sysrq`
+        - `$ echo c > /proc/sysrq-trigger`
+    - クラッシュダンプは`/var/crash/IPアドレス-YYYY-MM-DD-HH:MM:SS/vmcore`に出力される
