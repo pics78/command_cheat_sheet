@@ -197,27 +197,27 @@
     | オブジェクト | コマンド | 説明 |
     | ---- | ---- | ---- |
     | general | status | NerworkManagerの状態を表示 |
-    | ^ | hostname | ホスト名を表示 |
-    | ^ | hostname ホスト名 | 指定したホスト名に変更 |
+    || hostname | ホスト名を表示 |
+    || hostname ホスト名 | 指定したホスト名に変更 |
     | networking | on/off | ネットワークを有効/無効にする |
     | radio | connectivity [check] | ネットワークの状態を表示(checkを指定すると再確認する) |
-    | ^ | wifi | Wi-Fiの状態を表示 |
-    | ^ | wifi no/off | Wi-Fi接続を有効/無効にする |
-    | ^ | wwan | モバイルブロードバンドの状態を表示 |
-    | ^ | wwan on/off | モバイルブロードバンド接続を有効/無効にする |
-    | ^ | all on/off | すべての無線接続を有効/無効にする |
+    || wifi | Wi-Fiの状態を表示 |
+    || wifi no/off | Wi-Fi接続を有効/無効にする |
+    || wwan | モバイルブロードバンドの状態を表示 |
+    || wwan on/off | モバイルブロードバンド接続を有効/無効にする |
+    || all on/off | すべての無線接続を有効/無効にする |
     | connection | show [--active] | 接続情報を表示(--active指定でアクティブな接続のみに) |
-    | ^ | modify インターフェース名 パラメータ | 指定した接続を設定 |
-    | ^ | up ID | 接続を有効にする |
-    | ^ | down ID | 接続を無効にする |
+    || modify インターフェース名 パラメータ | 指定した接続を設定 |
+    || up ID | 接続を有効にする |
+    || down ID | 接続を無効にする |
     | device | status | デバイスの状態を表示 |
-    | ^ | show インターフェース名 | 指定したデバイスを表示 |
-    | ^ | modify インターフェース名 パラメータ | 指定したデバイスを設定 |
-    | ^ | connect インターフェース名 | 指定したデバイスを接続する |
-    | ^ | disconnect インターフェース名 | 指定したデバイスを切断する |
-    | ^ | delete インターフェース名 | 指定したデバイスを削除する |
-    | ^ | monitor インターフェース名 | 指定したデバイスをモニターする |
-    | ^ | wifi list | Wi-Fiアクセスポイントを表示 |
-    | ^ | wifi connect SSID | Wi-Fiアクセスポイントに接続する |
-    | ^ | wifi hotspot | Wi-Fiホットスポットを作成する |
-    | ^ | wifi rescan | Wi-Fiアクセスポイントを再検索する |
+    || show インターフェース名 | 指定したデバイスを表示 |
+    || modify インターフェース名 パラメータ | 指定したデバイスを設定 |
+    || connect インターフェース名 | 指定したデバイスを接続する |
+    || disconnect インターフェース名 | 指定したデバイスを切断する |
+    || delete インターフェース名 | 指定したデバイスを削除する |
+    || monitor インターフェース名 | 指定したデバイスをモニターする |
+    || wifi list | Wi-Fiアクセスポイントを表示 |
+    || wifi connect SSID | Wi-Fiアクセスポイントに接続する |
+    || wifi hotspot | Wi-Fiホットスポットを作成する |
+    || wifi rescan | Wi-Fiアクセスポイントを再検索する |
