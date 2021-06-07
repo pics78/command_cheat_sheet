@@ -221,3 +221,11 @@
     || wifi connect SSID | Wi-Fiアクセスポイントに接続する |
     || wifi hotspot | Wi-Fiホットスポットを作成する |
     || wifi rescan | Wi-Fiアクセスポイントを再検索する |
+
+    - ネットワークインターフェースの設定を表示: `$ nmcli`
+    - NetworkManagerの状態を表示: `$ nmcli general status`
+    - 接続の一覧を表示: `$ nmcli connection show`
+    - ネットワークインターフェースを指定すると詳細な情報を確認できる: `$ nmcli con show "enp0s3"`
+    - enp0s3ネットワークインターフェースにIPアドレス192.168.1.100/24を追加設定: `$ nmcli con mod enp0s3 ipv4.addresses 192.168.100/24`
+    - 参照先DNSサーバに8.8.8.8を追加: `$ nmcli conn mod enp0s3 +ipv4.dns 8.8.8.8`
+    - 変更した設定を反映させるために一旦接続を停止する: `$ nmcli con down enp0s3 ; nmcli con up enp0s3`
