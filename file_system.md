@@ -95,7 +95,7 @@
         - `$ btrfs コマンド サブコマンド`
             - `filesystem show`: 情報表示
             - `filesystem df`: 使用状況表示
-            - `filesystme label`: ラベル設定
+            - `filesystem label`: ラベル設定
             - `filesystem resize`: サイズ変更
             - `subvolume create`: サブボリュームを作成
             - `subvolume delete`: サブボリュームの削除
