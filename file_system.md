@@ -107,6 +107,19 @@
                 - IDの確認: `$ btrfs subvolume list /mnt`
                 - マウント: `$ mount -t btrfs -o subvolid=確認したID /dev/sdb1 /data`
         - Btrfsへの変換: `$ btrfs-convert`
+- ISOファイル
+    - CD-ROMやDVDで使用するファイルシステムの規格に基づきディレクト階層を1つのファイルにまとめたもの
+    - CD-ROMやDVDのISO9660イメージファイルを作成: `$ mkisofs [オプション] ディレクトリ`
+
+    | オプション | 説明 |
+    | ---- | ---- |
+    | -J | MicrosoftWindowsからも読めるようにISO9660にJoliet拡張を追加 |
+    | -R | UNIX(POSIX)ファイルシステムに対応したRockRidge拡張を追加 |
+    | -o | 出力先ファイルを指定 |
+    | -T | TRANS.TBLファイルを各ディレクトリに作成 |
+
+    ＊ TRANS.TBL: RockRidge拡張やJoliet拡張に対応していないシステムのための短縮形ファイル名と元の長いファイル名の変換テーブル
+
 - SMART(Self-Monitoring Analysis and Reporting Technology System)
     - smartmontools(代表的なLinuxのSMART対応ソフトウェア)
         - `$ smartctl オプション`
