@@ -26,7 +26,7 @@
     | コマンド | 説明 |
     | ---- | ---- |
     | docker ps | コンテナ一覧を表示 |
-    | docker stat | コンテナの詳細を表示 |
+    | docker stats | コンテナの詳細を表示 |
     | docker run | コンテナの起動 |
     | docker create | Dockerイメージからコンテナを生成 |
     | docker attach | コンテナに接続 |
@@ -37,7 +37,7 @@
     | docker kill | コンテナを強制的に停止 |
     | docker rm | コンテナを削除 |
     | docker rmi | Dockerイメージを削除 |
-    | docker images | Dockerイメージの一覧うぃ表示 |
+    | docker images | Dockerイメージの一覧を表示 |
     | docker pull | Dockerイメージを取得 |
     | docker import | tarアーカイブからDockerイメージを作成 |
     | docker build | 新しいDockerイメージを作成 |
@@ -95,7 +95,7 @@
         - コンテナ外に作成したファイルをコンテナ内から参照するには-vオプションを使う
             - 例: `$ docker run --name nginxtest2 -v /home/centuser/html:/usr/share/nginx/html -d -p 8080:80 nginx`
     - Dockerfile
-        - 既存のDOckerイメージに操作を加えて新しいDockerイメージを作成できる
+        - 既存のDockerイメージに操作を加えて新しいDockerイメージを作成できる
         - Dockerイメージを作成する際のMakefileに相当する
         - Dockerfileの設定項目
 
@@ -109,7 +109,7 @@
         | EXPOSE | 指定したポートを開く |
         | USER | 実行ユーザを指定 |
 
-        - DockerfileからDockerイメージを作成: `$ docker build -t リポジトリ名:タグ名 Dockerファイルのあるディレクトリ`
+        - DockerfileからDockerイメージを作成: `$ docker build -t リポジトリ名:タグ名 Dockerflieのあるディレクトリ`
     - コンテナの運用・管理
         - コンテナの状態を詳しく確認: `$ docker stats`
         - 圧縮アーカイブファイルからDockerイメージを生成: `$ docker import ファイル名orURL [リポジトリ名[:タグ名]]`
