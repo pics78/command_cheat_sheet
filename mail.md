@@ -101,8 +101,8 @@
     - 10-ssl.confでのPOP/IMAP over SSLの有効化
     ```
     ssl = yes
-    ssl_cert = 証明書ファイル
-    ssl_key = サーバ鍵ファイル
+    ssl_cert = <サーバ証明書ファイルのパス
+    ssl_key = <サーバ鍵ファイルのパス
     ```
 
     - メール受信関連の主なポート番号
