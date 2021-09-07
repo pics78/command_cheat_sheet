@@ -49,7 +49,7 @@
         - 起動
             - CentOS等: `$ systemctl start httpd.service`
             - Ubuntu等: `$ systemctl start apache2.service`
-        - apachectlコマンド
+        - apachectlコマンド（Debian系ではapache2ctl）
             - 書式: `$ apachectl サブコマンド`
 
             | サブコマンド | 説明 |
@@ -61,18 +61,29 @@
             | reload | 設定ファイルの再読み込み |
             | configtest | 設定ファイルの構文チェック |
     
+        - httpdコマンド
+            - 書式 `$ httpd [オプション ]
+
+            | オプション | 説明 |
+            | --- | --- |
+            | -l | 静的に組み込まれたモジュールの表示 |
+            | -M | 静的、動的に組み込まれたモジュールを両方表示（Apache2.2系から） |
+
     - httpd.confの主な設定値
         - ServerTokens Prod|Major|Minor|Min|OS|Full  
         右にいくほど詳細なバージョン情報を公開（通常はProd）
         - ServerRoot パス  
         httpdの利用するトップディレクトリ
-        - ServerName サーバのホスト名
+        - ServerName サーバのホスト名[:ポート番号]
         - ServerAdmin 管理者のメールアドレス  
         エラーページなどに表示されるようになる
+        - ServerAlias サーバの別名（VirtualHost）
         - StartServers 起動時の子プロセス数
         - MinSpareServers 待機子プロセス数の最小値
         - MaxSpareServers 待機子プロセス数の最大値
         - ServerLimits 生成子プロセスの設定可能上限
+        - MaxConnectionsPerChild リクエスト数 (Ver2.3.9以前はMaxRequestsPerChild)  
+        httpd子プロセスが処理するリクエストの最大数
         - MaxRequestWorkers 同時接続数
         - Timeout タイムアウト時間[s]
         - KeepAlive on|off （TCP接続保持の有効化）
@@ -112,7 +123,8 @@
         - CustomLog ログファイル名 ログ書式
         - HostnameLookups on|off
         - Alias アクセスディレクトリ 参照先のパス
-        - Redirect アクセスディレクトリまたはファイル 転送先URL
+        - Redirect [ステータス] DocumentRootからのパス(/..) 転送先URL(http://..)  
+        ステータスはデフォルトで302(temp)または301(permanent)
         - ScriptAlias 指定ディレクトリ CGI格納ディレクトリ
         - ErrorDocument エラーコード ファイル名|文字列|URL
         - Options オプション
@@ -139,3 +151,60 @@
         | Options | Optionsの設定を有効化 |
         | None | .htaccessでの変更を無効化 |
         | All | .htaccessで変更可能なすべての設定を有効化 |
+
+        - クライアントアクセス認証関連
+            - AuthType Basic|Digest
+            - AuthName 認可領域名  
+            認証時のダイアログボックスに表示される文字列
+            - AuthUserFile パスワードファイル名
+            - AuthGroupFile 認証するグループファイル名（Basic認証）
+            - AuthDigestGroupFile 認証するグループファイル名（Digest認証）
+            - Require 認証対象とするユーザまたはグループ
+                - `Require user ユーザ名 ユーザ名 ...`
+                - `Require group グループ名 グループ名 ...`
+                - `Require valid-user` （パスワードファイルにエントリのあるすべてのユーザが認証対象となる）
+
+        - 適用範囲の指定
+            - ファイルごとの設定: `<Files ファイル名>...</Files>`
+            - ディレクトリごとの設定: `<Directory ディレクトリ名>...</Directory>`
+            - URLごとの設定: `<Location URL>...</Location>`
+            - モジュールごとの設定: `<IFModule モジュール>...</IFModule>`  
+            （指定したモジュールが適応されていた場合の設定）
+            - HTTPメソッドごとの設定:
+                - 指定メソッドのみに適応: `<Limit HTTPメソッド>...</Limit>`
+                - 指定メソッド以外のメソッドに適応: `<LimitExcept HTTPメソッド>...</LimitExcept>`
+            - バーチャルホスト設定:
+                - 名前ベース: `<VirtualHost *:80>...</VirtualHost>`
+
+    - ユーザ管理
+        - Basic認証
+            - `$ htpasswd [オプション] ファイル名 ユーザ名`
+
+            | オプション | 説明 |
+            | --- | --- |
+            | -c | パスワードファイルの新規作成 |
+            | -D | ユーザの削除 |
+
+        - Digest認証
+            - `$ htdigest [-c] ファイル名 認可領域名 ユーザ名`
+
+    - SSL/TLS
+        - サーバ秘密鍵の作成:`$ openssl genrsa -out server.key 2048`
+        - 証明書発行要求書(CSR)の作成: `$ openssl req -new -key server.key -out server.csr`
+        - CSRに対して認証局に署名してもらうことでサーバ証明書 `server.crt` を作成する
+        - 自己署名してサーバ証明書を作成: `$ openssl req -new -x509 -key server.key -out server.crt`
+        - SSL/TLS関連の主なディレクティブ
+
+        | ディレクティブ | 説明 |
+        | --- | --- |
+        | SSLEngine on\|off | 有効化/無効化 |
+        | SSLProtocol | 使用可能なSSLプロトコルを指定（+で有効化, -で無効化） |
+        | SSLCipherSuite | 暗号スイートの指定（:で連結, !で無効化） |
+        | SSLCertificateFile | サーバ証明書ファイル |
+        | SSLCertificateKeyFile | サーバ秘密鍵ファイル |
+        | SSLCertificateChainFile | 中間CA証明書ファイル（Apache2.4.8からはSSLCertificateFileにまとめて指定する） |
+        | SSLCACertificateFile | クライアント認証に使用するCA証明書ファイル |
+        | SSLCACertificatePath | クライアント認証に使用するCA証明書ファイルが置かれたディレクトリ |
+        | SSLVerifyClient | クライアント認証レベル（none, optional, optional_no_ca, require） |
+
+        - 使用可能な暗号スイートの確認: `$ openssl ciphers -v`
