@@ -208,3 +208,105 @@
         | SSLVerifyClient | クライアント認証レベル（none, optional, optional_no_ca, require） |
 
         - 使用可能な暗号スイートの確認: `$ openssl ciphers -v`
+
+- Nginx
+    - 設定の再読み込み: `$ nginx -s reload`
+    - 終了: `$ nginx -s dtop`
+    - nginx.confの主なディレクティブ
+
+    | ディレクティブ | コンテキスト | 説明 |
+    | --- | --- | --- |
+    | http {} | main | httpサーバとしての設定 |
+    | server {} | http | バーチャルホストの設定 |
+    | location prefix 条件 {} | server, location | 条件にマッチするリクエストURIに対する設定 |
+    | include | すべて | 他の設定ファイルの読み込み |
+    | user | main | ワーカープロセスの実行ユーザ |
+    | worker_processes | main | ワーカープロセス数（CPUコア数） |
+    | worker_connections | events | 1つのワーカープロセスが同時に処理できる最大コネクション数 |
+    | log_format | http | アクセスログの書式定義 |
+    | access_log | http, server, location | アクセスログのパスとログレベル |
+    | error_log | main, http, server, location | エラーログファイルのパスとログレベル |
+    | listen | server | リクエストを受け付けるポート番号 |
+    | server_name | server | サーバ名（バーチャルホスト名） |
+    | keepalive_requests | http, server, location | 一度の接続で受け付ける最大リクエスト数 |
+    | keepalive_timeout | http, server, location | キープアライブのタイムアウト(s) |
+    | server_tokens | http, server, location | バージョン番号表示（offで非表示） |
+    | root | http, server, location | ドキュメントルート |
+    | index | gttp, server, location | インデックスファイル |
+    | autoindex | http, server, location | インデックスリスト表示（offで非表示） |
+    | error_page | http, server, location | エラーコードとエラーページURI |
+    | rewrite | server, location | リダイレクト設定 |
+
+    - SSL/TLS関連ディレクティブ
+        - ssl: onで有効化
+        - ssl_certificate: サーバ証明書ファイル, 中間CA証明書ファイル
+        - ssl_certificate_key: サーバ秘密鍵ファイル
+        - ssl_protocols: プロトコルのバージョン
+        - ssl_ciphers: 利用する暗号アルゴリズム
+
+    - リバースプロキシ関連ディレクティブ
+        - proxy_pass: プロキシ先URI（locationコンテキスト）
+        - proxy_http_varsion: HTTPプロトコルバージョン（1.1/2）
+        - proxy_set_hrader: プロキシ先に送られるリクエストヘッダフィールドの再定義または追加
+        - proxy_pass_header: プロキシ先からクライアントへの通過を許可するヘッダフィールドの指定
+
+    - FastCGI関連ディレクティブ
+        - fastcgi_pass: FastCGIサーバの指定（locationコンテキスト）
+        - fastcgi_param: FastCGIサーバに渡すパラメータ設定
+
+    - nginx.confファイルの構文チェック: `$ nginx -t`
+
+- Squid
+    - squid.confの基本設定項目
+        - http_port: Squidが利用するポート番号
+        - visible_hostname: ホスト名
+        - hierarchy_stoplist: キャッシュを利用しない文字列
+        - maximum_object_size: キャッシュ可能な最大ファイルサイズ
+        - minimum_object_size: キャッシュ可能な最小ファイルサイズ
+        - maximum_object_size_in_memory: メモリ上の最大ファイルサイズ
+        - ipcache_size: キャッシュするIPアドレス数
+        - cache_dir: キャッシュを格納するディレクトリと容量などのパラメータ
+        - cache_mem: メモリ上のキャッシュサイズ
+        - cache_access_log: クライアントのアクセスログ
+        - cache_log: キャッシュのログ
+        - ftp_user: anonymousでFTPアクセスする際のパスワード
+        - ftp_passive on|off: FTPパッシブモードのオン/オフ
+        - reference_age: キャッシュの保存期間
+        - request_header_max_size: HTTPリクエストヘッダの最大サイズ
+        - request_body_max_size: HTTPリクエストボディの最大サイズ
+        - reply_body_max_size: レスポンスの最大ボディサイズ
+        - acl: アクセスコントロールリストの設定
+        - http_access: アクセスコントロールリストの制御
+    - アクセス制御
+        - アクセスコントロールリストの作成  
+        `$ acl ACL名 ACLタイプ 文字列またはファイル名`
+
+        | ACLタイプ | 説明 |
+        | --- | --- |
+        | src | クライアント側のIPアドレスとマスク |
+        | dst | 代理アクセス先サーバのIPアドレスとマスク |
+        | srcdomain | クライアントドメイン名 |
+        | dstdomain | 代理アクセス先サーバドメイン名 |
+        | port | 代理アクセス先サーバポート番号 |
+        | myport | クライアントポート番号 |
+        | arp | MACアドレス |
+        | proto | プロトコル |
+        | method | HTTPメソッド |
+        | url_regex | URLにマッチする正規表現 |
+        | urlpath_regex | URLからプロトコルとホスト名を除いたパス名にマッチする正規表現 |
+        | time | 有効な時刻 |
+        | proxy_auth | ユーザ認証の対象 |
+
+        - アクセスコントロールリストに対しての制御  
+        `$ http_access allow|deny ACL名`
+    
+    - squidclientコマンド  
+    `$ squidclient オプション URL`
+
+    | オプション | 説明 |
+    | --- | --- |
+    | -h ホスト | URLを検索するプロキシのホスト名/IPを指定 |
+    | -p ポート番号 | プロキシのポート番号を指定（デフォルトは3128） |
+    | -m メソッド | HTTPリクエストメソッドを指定 |
+    | -u ユーザ名 | プロキシ認証のユーザを指定 |
+    | -w パスワード | プロキシ認証のパスワードを指定 |
