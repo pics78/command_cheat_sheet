@@ -275,30 +275,30 @@
         - request_header_max_size: HTTPリクエストヘッダの最大サイズ
         - request_body_max_size: HTTPリクエストボディの最大サイズ
         - reply_body_max_size: レスポンスの最大ボディサイズ
-        - acl: アクセスコントロールリストの設定
-        - http_access: アクセスコントロールリストの制御
-    - アクセス制御
-        - アクセスコントロールリストの作成  
-        `$ acl ACL名 ACLタイプ 文字列またはファイル名`
+        - auth_param 認証方式 program: ユーザ認証方法等の設定
 
-        | ACLタイプ | 説明 |
-        | --- | --- |
-        | src | クライアント側のIPアドレスとマスク |
-        | dst | 代理アクセス先サーバのIPアドレスとマスク |
-        | srcdomain | クライアントドメイン名 |
-        | dstdomain | 代理アクセス先サーバドメイン名 |
-        | port | 代理アクセス先サーバポート番号 |
-        | myport | クライアントポート番号 |
-        | arp | MACアドレス |
-        | proto | プロトコル |
-        | method | HTTPメソッド |
-        | url_regex | URLにマッチする正規表現 |
-        | urlpath_regex | URLからプロトコルとホスト名を除いたパス名にマッチする正規表現 |
-        | time | 有効な時刻 |
-        | proxy_auth | ユーザ認証の対象 |
+        - アクセス制御
+            - アクセスコントロールリストの定義  
+            `acl ACL名 ACLタイプ 文字列またはファイル名`
 
-        - アクセスコントロールリストに対しての制御  
-        `$ http_access allow|deny ACL名`
+            | ACLタイプ | 説明 |
+            | --- | --- |
+            | src | クライアント側のIPアドレスとマスク |
+            | dst | 代理アクセス先サーバのIPアドレスとマスク |
+            | srcdomain | クライアントドメイン名 |
+            | dstdomain | 代理アクセス先サーバドメイン名 |
+            | port | 代理アクセス先サーバポート番号 |
+            | myport | クライアントポート番号 |
+            | arp | MACアドレス |
+            | proto | プロトコル |
+            | method | HTTPメソッド |
+            | url_regex | URLにマッチする正規表現 |
+            | urlpath_regex | URLからプロトコルとホスト名を除いたパス名にマッチする正規表現 |
+            | time | 有効な時刻 |
+            | proxy_auth | ユーザ認証の対象 |
+
+            - アクセスコントロールリストに対しての制御  
+            `http_access allow|deny ACL名`
     
     - squidclientコマンド  
     `$ squidclient オプション URL`
