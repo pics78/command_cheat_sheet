@@ -126,7 +126,7 @@
         - Redirect [ステータス] DocumentRootからのパス(/..) 転送先URL(http://..)  
         ステータスはデフォルトで302(temp)または301(permanent)
         - ScriptAlias 指定ディレクトリ CGI格納ディレクトリ
-        - ErrorDocument エラーコード ファイル名|文字列|URL
+        - ErrorDocument エラーコード /ファイル名|文字列|URL
         - Options オプション
 
         | 主なオプション | 説明 |
@@ -159,10 +159,28 @@
             - AuthUserFile パスワードファイル名
             - AuthGroupFile 認証するグループファイル名（Basic認証）
             - AuthDigestGroupFile 認証するグループファイル名（Digest認証）
-            - Require 認証対象とするユーザまたはグループ
-                - `Require user ユーザ名 ユーザ名 ...`
-                - `Require group グループ名 グループ名 ...`
-                - `Require valid-user` （パスワードファイルにエントリのあるすべてのユーザが認証対象となる）
+            - Require エンティティ
+
+            | エンティティ | モジュール | 説明 |
+            | --- | --- | --- |
+            | all granted | mod_authz_core | 全て許可 |
+            | all denied | mod_authz_core | 全て拒否 |
+            | env 環境変数 | mod_authz_core | 指定した環境変数が設定されていると許可 |
+            | method httpメソッド | mod_authz_core | 指定したメソッドの場合に許可 |
+            | expr 表現 | mod_authz_core | 指定した表現に合致すると許可 |
+            | ip IPアドレス（範囲） | mod_authz_host | 指定アドレスを許可 |
+            | host ホスト名 | mod_authz_host | 指定ホストを許可 |
+            | user ユーザ名 | mod_authz_user | 指定ユーザを許可 |
+            | group グループ名 | mod_authz_user | 指定グループを許可 |
+            | valid-user | mod_authz_user | 正常に認証されたユーザを許可 |
+
+            - 複数条件指定する場合のRequireディレクティブ
+
+            | ディレクティブ | 説明 |
+            | --- | --- |
+            | \<RequireAll>...\</RequireAll> | 全ての条件に合致したら許可 |
+            | \<RequireAny>...\</RequireAny> | いずれかの条件に合致したら許可（デフォルト） |
+            | \<RequireNone>...\</RequireNone> | 全ての条件に合致しなかったら許可 |
 
         - 適用範囲の指定
             - ファイルごとの設定: `<Files ファイル名>...</Files>`
@@ -296,6 +314,14 @@
             | urlpath_regex | URLからプロトコルとホスト名を除いたパス名にマッチする正規表現 |
             | time | 有効な時刻 |
             | proxy_auth | ユーザ認証の対象 |
+
+                -- 例
+                    - testという文字列を含むURLをACL名Unwantedとして定義
+                        $ acl Unwanted urlpath_regex test
+                    - /var/squid/unwanted_urlの内容に合致するURLをACL名Unwantedとして定義
+                        $ acl Unwanted urlpath_regex "/var/squid/unwanted_url"
+
+
 
             - アクセスコントロールリストに対しての制御  
             `http_access allow|deny ACL名`
