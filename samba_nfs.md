@@ -28,6 +28,7 @@
             - netbios name = NetBIOS名
             - server string = コメント
             - hosts allow = ホスト
+            - hosts deny = ホスト
             - guest account = ゲストユーザ名
             - map to guest = Never|Bad User|Bad Password
             - log file = ログファイル名
@@ -41,6 +42,23 @@
             - logon script = スクリプトファイル名
             - wins support = Yes|No
             - wins server = IPアドレス
+            - security = 認証方法
+
+            | 認証方法 | 説明 |
+            | --- | --- |
+            | user | ユーザ名とパスワードでローカル認証を行う |
+            | share | パスワードだけで認証を行う |
+            | domain | ドメインコントローラにより認証を行う |
+            | server | 他のSMBサーバにより認証を行う |
+            | ads | ADドメインのドメインコントローラで認証を行う |
+
+            - passdb backend = パスワードデータベース
+
+            | パスワードデータベース | 説明 |
+            | --- | --- |
+            | tdbsam | TDB（TrivalDataBase） |
+            | ldapsam | LDAP |
+            | smbpasswd | smbpasswdファイル |
 
         - 共通設定項目
             - comment = コメント
@@ -64,6 +82,10 @@
             - valid users = ユーザ名
             - guest ok = Yes|No
             - public = Yes|No
+  
+        - printersセクション
+            - print ok = Yes|No
+            - printable = Yes|No
 
         - smb.confの構文チェック: `$ testparm [オプション] [設定ファイル]`
 
