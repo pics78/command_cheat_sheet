@@ -10,6 +10,22 @@
         - mail_spool_directory: メールスプールディレクトリ
         - mailbox_command: ローカル配送を行うプログラム
         - smtpd_banner: SMTPで出力されるバナー情報
+        - smtpd_use_tls: yesでTLSの有効化（2.3より前）
+        - smtpd_enforce_tls: yesでTLSを強制（2.3より前）
+        - smtpd_tls_security_level: TLS適用レベル（2.3以降）
+
+        | レベル | 説明 |
+        | --- | --- |
+        | may | TLSを有効化, 適用は任意（クライアントに依存） |
+        | encrypt | TLSを有効化, 強制適用 |
+
+        - smtpd_tls_cert_file: サーバ証明書ファイルを指定
+        - smtpd_tls_CAfile: CAの証明書ファイルを指定
+        - smtpd_tls_key_file: サーバ秘密鍵ファイルを指定
+
+    - /etc/postfix/master.cfの設定値
+        - smtps: コメントを外すとTLS設定を有効化
+
     - postconfコマンド
         - `$ postconf`: Postfixの全設定値を表示
         - `$ postconf -n`: デフォルト値から変更されている項目のみを表示
@@ -90,20 +106,30 @@
     | /etc/dovecot/conf.d/20-imap.conf | IMAP関連 |
     | /etc/dovecot/conf.d/20-pop3.conf | POP3関連 |
 
-    - 10-auth.confで指定できる主な認証メカニズム（項目: auth_mechanisms）
+    - dovecot.confの設定項目
+        - listen = IPアドレス（*ですべてのアドレス, IPv6では::）
+        - protocols = プロトコル（例: imap pop3 lmtp）
+        - verbose_proctitle = yes|no  
+        yesでpsコマンドの出力に詳細（ユーザ名, IPアドレス）を表示
+    - 10-mail.confの設定項目
+        - mail_location = メールボックス
+            - Maildir形式: maildir:~/Maildir
+            - mbox形式: mbox:~/mail:INBOX=/var/spool/mail/%u
+    - 10-auth.confの設定項目
+        - auth_mechanisms = 認証方式
 
-    | 値 | 説明 |
-    | --- | --- |
-    | plain | 平文によるユーザ認証（RFC4616） |
-    | login | 平文によるユーザ認証（標準仕様なし） |
-    | cram-md5 | チャレンジレスポンス方式によるユーザ認証（RFC2195） |
-
-    - 10-ssl.confでのPOP/IMAP over SSLの有効化
-    ```
-    ssl = yes
-    ssl_cert = <サーバ証明書ファイルのパス
-    ssl_key = <サーバ鍵ファイルのパス
-    ```
+        | 値 | 説明 |
+        | --- | --- |
+        | plain | 平文によるユーザ認証（RFC4616） |
+        | login | 平文によるユーザ認証（標準仕様なし） |
+        | cram-md5 | チャレンジレスポンス方式によるユーザ認証（RFC2195） |
+    - 20-imap.confの設定項目
+        - mail_max_userip_connections = 同一IPとユーザから接続できる最大数
+    - 10-ssl.confの設定項目
+        - POP/IMAP over SSLの有効化
+            - ssl = yes
+            - ssl_cert = <サーバ証明書ファイルのパス
+            - ssl_key = <サーバ鍵ファイルのパス
 
     - メール受信関連の主なポート番号
 
@@ -123,6 +149,7 @@
     - Dovecotの設定内容表示
         - `$ doveconf`: デフォルト値も含めすべて表示
         - `$ doveconf -n`: デフォルト値以外を表示
+        - `$ doveconf -c` : 設定ファイルを指定（デフォルトは/etc/dovecot/dovecot.conf）
     - doveadmコマンド
         - 主なサブコマンド
 

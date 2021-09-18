@@ -62,12 +62,15 @@
             | configtest | 設定ファイルの構文チェック |
     
         - httpdコマンド
-            - 書式 `$ httpd [オプション ]
+            - 書式 `$ httpd [オプション]
 
             | オプション | 説明 |
             | --- | --- |
             | -l | 静的に組み込まれたモジュールの表示 |
             | -M | 静的、動的に組み込まれたモジュールを両方表示（Apache2.2系から） |
+        
+        - apxsコマンド  
+        Apacheの動的モジュールのコンパイルとインストール
 
     - httpd.confの主な設定値
         - ServerTokens Prod|Major|Minor|Min|OS|Full  
@@ -192,7 +195,9 @@
                 - 指定メソッドのみに適応: `<Limit HTTPメソッド>...</Limit>`
                 - 指定メソッド以外のメソッドに適応: `<LimitExcept HTTPメソッド>...</LimitExcept>`
             - バーチャルホスト設定:
-                - 名前ベース: `<VirtualHost *:80>...</VirtualHost>`
+                - 名前ベース:
+                    - `NameVirtualHost IPアドレス`
+                    - `<VirtualHost *:80>...</VirtualHost>`
 
     - ユーザ管理
         - Basic認証
@@ -315,7 +320,7 @@
             | time | 有効な時刻 |
             | proxy_auth | ユーザ認証の対象 |
 
-                -- 例
+                ## 例
                     - testという文字列を含むURLをACL名Unwantedとして定義
                         $ acl Unwanted urlpath_regex test
                     - /var/squid/unwanted_urlの内容に合致するURLをACL名Unwantedとして定義

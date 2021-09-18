@@ -38,6 +38,7 @@
             - unix password sync = Yes|No
             - passwd program = パスワードコマンドのパス
             - passwd chat = 期待される文字列
+            - null passwords = Yes|No
             - username map = マッピングファイル名
             - logon script = スクリプトファイル名
             - wins support = Yes|No
@@ -59,6 +60,13 @@
             | tdbsam | TDB（TrivalDataBase） |
             | ldapsam | LDAP |
             | smbpasswd | smbpasswdファイル |
+
+            - Winbind関連
+
+            | 項目 | 説明 |
+            | --- | --- |
+            | idmap config * : backend = バックエンド | idmap機構で使用するバックエンドの指定（tdb, ldapなど） |
+            | idmap config * : range = 最小値-最大値 | Linuxユーザに割り当てるUID,GIDの範囲を指定 |
 
         - 共通設定項目
             - comment = コメント
@@ -94,6 +102,10 @@
         | -s, --suppress-prompt | 構文チェック後に[Enter]キーを押さずともsmb.confを表示 |
         | -v, --verbose | デフォルト値のパラメータも表示 |
         | --show-all-parameters | すべてのパラメータを表示 |
+
+        - Samba変数
+            - %v: Sambaのバージョン番号
+            - %U: セッションのユーザ名
     
     - Sambaユーザ管理
         - pdbeditコマンド  
@@ -111,6 +123,7 @@
 
         | オプション | 説明 |
         | --- | --- |
+        | -a | ユーザの追加 |
         | -d | ユーザの無効化 |
         | -e | ユーザの有効化 |
         | -x | ユーザの削除 |
@@ -131,14 +144,16 @@
         | kill-client-ip | 指定したIPアドレスのクライアントを切断（smbdのみ） |
         | ping | 指定対象にpingし応答が来た対象のPIDを表示 |
 
-        - smbstatusコマンド
+        - smbstatusコマンド  
+        Sambaサーバに接続しているクライアント等、稼働状況の確認を行う
 
         - nmblookupコマンド  
-        `$ nmblookup [オプション] NetBIOS名またはIPアドレス,ワークグループ名`
+        `$ nmblookup [オプション] NetBIOS名|IPアドレス|ワークグループ名`
 
         | オプション | 説明 |
         | --- | --- |
-        | -A | 引数をIPアドレスとみなす |
+        | -M | マスターブラウザを検索 |
+        | -A | 指定されたIPアドレスのMACアドレスやNetBIOS名などを表示 |
 
     - Sambaクライアント
         - smbclientコマンド  
@@ -146,9 +161,9 @@
 
         | オプション | 説明 |
         | --- | --- |
-        | -L | リスト表示 |
+        | -L ホスト名, --list=ホスト名 | リスト表示 |
+        | -U ユーザ名, --user=ユーザ名 | 接続するユーザを指定 |
         | -N | 認証を行わない |
-        | -U ユーザ | 接続するユーザを指定 |
         
         | サブコマンド | 説明 |
         | --- | --- |
@@ -197,18 +212,19 @@
         | net domain | ワークグループ一覧を表示 |
         | net status sessions | セッション一覧を表示 |
         | net status shares | 共有ごとのアクセス一覧を表示 |
+        | net ads join -U ユーザ名 | ActiveDirectoryドメインに参加 |
 
 - NFSサーバ
     - RPC（Remote Procedure Call）  
     ネットワーク上にあるリモートホストの機能を別のホストから使えるようにする仕組み
         - RPCプログラム番号とポート番号の対応: `/etc/rpc`
-        - RPCプログラム番号とポート番号のマッピングサービス: `portmap`
+        - RPCプログラム番号とポート番号のマッピングデーモン: portmap（portmapper）
         - RPCサービスの状況: rpcinfoコマンド  
         `$ rpcinfo オプション [ホスト名]`
 
         | オプション | 説明 |
         | --- | --- |
-        | -p | 指定したホストで動作しているRPCサービスの一覧を表示 |
+        | -p | 稼働しているRPCサービスの一覧を表示 |
     
     - NFSサーバの設定
         - サービスの開始
@@ -261,7 +277,7 @@
 
     - NFSクライアントの設定
         - mountコマンドをファイルシステムタイプにnfsを指定して実行  
-        `$ mount -t nfs centos7:/pub /mnt/nfs`
+        `$ mount -t nfs -o マウントオプション NFSサーバ名:エクスポートディレクトリ マウントポイント`
 
         | NFS特有のマウントオプション | 説明 |
         | --- | --- |

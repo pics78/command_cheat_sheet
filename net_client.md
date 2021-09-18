@@ -102,26 +102,38 @@
 
     - 変更
         - LDIFファイルの書き方
-            - 追加
+            - エントリの追加
+            ```
+            changetype: add
+            ```
+            - エントリの削除
+            ```
+            changetype: delete
+            ```
+            - 属性の追加
             ```
             dn: 変更するDN
             changetype: modify
             add: 追加する属性名
             追加する属性名: 値
             ```
-            - 修正
+            - 属性の変更
             ```
             dn: 変更するDN
             changetype: modify
-            replace: 修正する属性名
-            修正する属性名: 値
+            replace: 変更する属性名
+            変更する属性名: 値
             ```
-            - 削除
+            - 属性の削除
             ```
             dn: 変更するDN
             changetype: modify
             delete: 削除する属性名
             削除する属性名
+            ```
+            - RDNの変更
+            ```
+            changetype: modrdn
             ```
     - パスワードの変更: `$ ldappasswd [オプション] ユーザエントリDN`
 
