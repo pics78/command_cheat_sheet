@@ -8,7 +8,12 @@
         - mydestination: ローカル配送を行うドメイン名（メールを受け取るドメイン名)
         - mynetworks: 中継を許可するSMTPクライアントのアドレス
         - mail_spool_directory: メールスプールディレクトリ
+        - home_mailbox: ユーザのホーム配下のメールスプールディレクトリを指定（相対パス）
         - mailbox_command: ローカル配送を行うプログラム
+        - disable_vrfy_command: SMTPコマンドのVRFYの使用の無効化（yes）有効化（no）を指定
+        - relay_domains: 許可された送信先以外からのメールの中継先を指定（デフォルトは$mydestination）
+        - relayhost: 配送方法（配送先）を指定
+        - transport_maps: メールリレーの設定情報を指定
         - smtpd_banner: SMTPで出力されるバナー情報
         - smtpd_use_tls: yesでTLSの有効化（2.3より前）
         - smtpd_enforce_tls: yesでTLSを強制（2.3より前）
@@ -22,6 +27,11 @@
         - smtpd_tls_cert_file: サーバ証明書ファイルを指定
         - smtpd_tls_CAfile: CAの証明書ファイルを指定
         - smtpd_tls_key_file: サーバ秘密鍵ファイルを指定
+        - smtpd_sasl_auth_enable: yesでSASL認証の有効化, noで無効化
+        - smtpd_sasl_type: 認証に使うSASLプラグインの種類を指定
+        - smtpd_sasl_path: PostfixとSASLプラグインが認証情報を受け渡す方法を指定
+        - smtpd_sasl_local_domain: SASL認証のレルム（ドメイン）を指定
+        - 
 
     - /etc/postfix/master.cfの設定値
         - smtps: コメントを外すとTLS設定を有効化
