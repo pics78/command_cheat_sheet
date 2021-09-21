@@ -68,6 +68,14 @@
             | idmap config * : backend = バックエンド | idmap機構で使用するバックエンドの指定（tdb, ldapなど） |
             | idmap config * : range = 最小値-最大値 | Linuxユーザに割り当てるUID,GIDの範囲を指定 |
 
+            - マスターブラウザ関連
+
+            | 項目 | 説明 |
+            | --- | --- |
+            | os level = 数値 | ブラウザ選定時に宣言する優先度（大きいほど優先度大） |
+            | local master = yes\|no | ブラウザ選定に参加するか |
+            | preferred master = yes\|no | ブラウザ選定を要求するか |
+
         - 共通設定項目
             - comment = コメント
             - browseable = Yes|No
