@@ -118,7 +118,7 @@
         | --get-default-zone | デフォルトゾーンを表示 |
         | --set-default-zone | デフォルトゾーンを変更 |
         | --get-services | 定義されているサービスを一覧表示 |
-        | --list-all | 指定したゾーンで有効な項目を全て表示 |
+        | --list-all | ゾーンの設定を表示 |
         | --list-services | 指定したゾーンで有効なサービスを全て表示 |
         | --add-service=サービス名 | 指定したサービスを有効にする |
         | --add-ports=ポート番号/tcp・udp | 指定したポート番号を許可する |

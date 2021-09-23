@@ -212,7 +212,9 @@
             - `$ htdigest [-c] ファイル名 認可領域名 ユーザ名`
 
     - SSL/TLS
-        - サーバ秘密鍵の作成:`$ openssl genrsa -out server.key 2048`
+        - サーバ秘密鍵の作成:
+            - `$ openssl genrsa -out server.key 2048`
+            - `$ openssl genpkey -algorithm rsa -pkeyopt rsa keygen bits:2048 -aes128 -out server.key`
         - 証明書発行要求書(CSR)の作成: `$ openssl req -new -key server.key -out server.csr`
         - CSRに対して認証局に署名してもらうことでサーバ証明書 `server.crt` を作成する
         - 自己署名してサーバ証明書を作成: `$ openssl req -new -x509 -key server.key -out server.crt`

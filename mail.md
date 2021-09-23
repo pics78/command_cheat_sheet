@@ -14,6 +14,7 @@
         - relay_domains: 許可された送信先以外からのメールの中継先を指定（デフォルトは$mydestination）
         - relayhost: 配送方法（配送先）を指定
         - transport_maps: メールリレーの設定情報を指定
+        - sender_canonical_maps: 送信者アドレスの書き換え時に参照する検索テーブルを指定
         - smtpd_banner: SMTPで出力されるバナー情報
         - smtpd_use_tls: yesでTLSの有効化（2.3より前）
         - smtpd_enforce_tls: yesでTLSを強制（2.3より前）
